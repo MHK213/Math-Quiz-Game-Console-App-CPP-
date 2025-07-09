@@ -1,0 +1,9 @@
+﻿  Math Quiz Game Project.cpp
+C:\Users\DELL\Desktop\Programming Advices\Math Quiz Game Project (Console-based)\Math Quiz Game Project\Math Quiz Game Project\Math Quiz Game Project.cpp(121,31): warning C4244: 'return': conversion from 'float' to 'short', possible loss of data
+C:\Users\DELL\Desktop\Programming Advices\Math Quiz Game Project (Console-based)\Math Quiz Game Project\Math Quiz Game Project\Math Quiz Game Project.cpp(237,40): warning C4244: '=': conversion from 'float' to 'short', possible loss of data
+C:\Users\DELL\Desktop\Programming Advices\Math Quiz Game Project (Console-based)\Math Quiz Game Project\Math Quiz Game Project\Math Quiz Game Project.cpp(123,1): warning C4715: 'SimpleCalculator': not all control paths return a value
+C:\Users\DELL\Desktop\Programming Advices\Math Quiz Game Project (Console-based)\Math Quiz Game Project\Math Quiz Game Project\Math Quiz Game Project.cpp(110,1): warning C4715: 'OperationSymbol': not all control paths return a value
+C:\Users\DELL\Desktop\Programming Advices\Math Quiz Game Project (Console-based)\Math Quiz Game Project\Math Quiz Game Project\Math Quiz Game Project.cpp(139,1): warning C4715: 'QstResult': not all control paths return a value
+C:\Users\DELL\Desktop\Programming Advices\Math Quiz Game Project (Console-based)\Math Quiz Game Project\Math Quiz Game Project\Math Quiz Game Project.cpp(197,1): warning C4715: 'LevelName': not all control paths return a value
+C:\Users\DELL\Desktop\Programming Advices\Math Quiz Game Project (Console-based)\Math Quiz Game Project\Math Quiz Game Project\Math Quiz Game Project.cpp(212,1): warning C4715: 'OpName': not all control paths return a value
+  Math Quiz Game Project.vcxproj -> C:\Users\DELL\Desktop\Programming Advices\Math Quiz Game Project (Console-based)\Math Quiz Game Project\x64\Debug\Math Quiz Game Project.exe
