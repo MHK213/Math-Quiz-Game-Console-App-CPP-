@@ -1,0 +1,9 @@
+ Math Quiz Game Project.vcxproj.user/
+x64/
+*.user
+*.log
+*.obj
+*.exe
+*.pdb
+*.suo
+
