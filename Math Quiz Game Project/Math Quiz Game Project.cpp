@@ -4,8 +4,10 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
 // Enumeration to represent question difficulty levels
 enum enQstLevel { Easy = 1, Med = 2, Hard = 3, MixLevel = 4 };
@@ -22,13 +24,13 @@ struct stQstInfo {
     enOpType OpType;
     enQstLevel QstLevel;
     char opSign = '+';
-    enResult Result;
+    enResult Result, PreviousAnswerResult;
     string ResultName = "";
 };
 
 // Structure to hold summary of the game session
 struct stGameResults {
-    short NumberOfQst = 0, RightAnswers = 0, WrongAnswers = 0;
+    short NumberOfQst = 0, RightAnswers = 0, WrongAnswers = 0, Score = 0;
     string LevelName = "", OpName = "";
     enQstLevel QstLevel;
     enOpType OpType;
@@ -139,11 +141,24 @@ short SimpleCalculator(short Number1, short Number2, enOpType OpType) {
 }
 
 // Compares user's answer with correct answer
-enResult IsRightOrWrong(short UserAnswer, short RightAnswer) {
-    if (UserAnswer == RightAnswer)
+enResult IsRightOrWrong(short UserAnswer, short RightAnswer, enResult PreviousAnswerResult, short& Score, float TimeTaken) {
+    if (UserAnswer == RightAnswer) {
+        if (PreviousAnswerResult == enResult::RightAnswer)
+            Score += 20;  // +20 for consecutive correct
+        else
+            Score += 10;  // Right Answer
+
+        // Bonus for fast answer
+        if (TimeTaken < 3)
+            Score += 5;   // Quick reflex bonus
+        else if (TimeTaken > 10)
+            Score -= 2;   // Took too long
         return enResult::RightAnswer;
-    else
+    }
+    else {
+        Score -= 5;
         return enResult::WrongAnswer;
+    }
 }
 
 // Returns result description string
@@ -182,8 +197,10 @@ void PrintQstInfo(stQstInfo QstInfo) {
 }
 
 // Prints the result of a single question
-void PrintQstResults(stQstInfo QstInfo) {
+void PrintQstResults(stQstInfo QstInfo, float TimeTaken, short Score) {
     cout << QstInfo.ResultName << endl;
+    cout << "Time Taken: " << TimeTaken << " sec\n";
+    cout << "Current Score: " << Score << endl;
 
     SetResultScreenColor(QstInfo.Result);
 }
@@ -241,7 +258,7 @@ string OpName(enOpType OpType) {
 stGameResults PlayGame(short HowManyQst) {
     stQstInfo QstInfo;
 
-    short RightAnswers = 0, WrongAnswers = 0;
+    short RightAnswers = 0, WrongAnswers = 0, Score = 0;
 
     QstInfo.QstLevel = ReadQstLevel();
     if (QstInfo.QstLevel == enQstLevel::MixLevel)
@@ -261,17 +278,30 @@ stGameResults PlayGame(short HowManyQst) {
 
         PrintQstInfo(QstInfo);
 
-        QstInfo.UserAnswer = ReadNumber();
-        QstInfo.RightAnswer = SimpleCalculator(QstInfo.Number1, QstInfo.Number2, QstInfo.OpType);
-        QstInfo.Result = IsRightOrWrong(QstInfo.UserAnswer, QstInfo.RightAnswer);
-        QstInfo.ResultName = QstResult(QstInfo.Result);
+        // Start timing
+        auto start = high_resolution_clock::now();
 
-        PrintQstResults(QstInfo);
+        QstInfo.UserAnswer = ReadNumber();
+
+        // Stop timing after read Answer
+        auto end = high_resolution_clock::now();
+        duration<float> elapsed = end - start;
+        float TimeTaken = elapsed.count(); // in seconds
+
+        QstInfo.RightAnswer = SimpleCalculator(QstInfo.Number1, QstInfo.Number2, QstInfo.OpType);
+        QstInfo.PreviousAnswerResult;
+        QstInfo.Result = IsRightOrWrong(QstInfo.UserAnswer, QstInfo.RightAnswer, QstInfo.PreviousAnswerResult, Score, TimeTaken);
+        QstInfo.ResultName = QstResult(QstInfo.Result);
+        QstInfo.PreviousAnswerResult = QstInfo.Result;
+
+        PrintQstResults(QstInfo, TimeTaken, Score);
 
         if (QstInfo.Result == enResult::RightAnswer)
             RightAnswers++;
         else
             WrongAnswers++;
+
+        QstInfo.OpType = RandomOperation();
     }
 
     PrintFinalResult(RightAnswers, WrongAnswers);
@@ -283,17 +313,19 @@ stGameResults PlayGame(short HowManyQst) {
     GameResults.OpName = OpName(QstInfo.OpType);
     GameResults.RightAnswers = RightAnswers;
     GameResults.WrongAnswers = WrongAnswers;
+    GameResults.Score = Score;
 
     return GameResults;
 }
 
 // Displays the final summary of the quiz
 void PrintFinalScreen(stGameResults GameResults) {
-    cout << "\nNumber Of Questions : " << GameResults.NumberOfQst << endl;
-    cout << "Questions Level     : " << GameResults.LevelName << endl;
-    cout << "OpType              : " << GameResults.OpName << endl;
+    cout << "\nNumber Of Questions   : " << GameResults.NumberOfQst << endl;
+    cout << "Questions Level         : " << GameResults.LevelName << endl;
+    cout << "OpType                  : " << GameResults.OpName << endl;
     cout << "Number of Right Answers : " << GameResults.RightAnswers << endl;
     cout << "Number of Wrong Answers : " << GameResults.WrongAnswers << endl;
+    cout << "Final Score             : " << GameResults.Score << endl;
     cout << "\n_____________________________________________\n\n";
 }
 
@@ -321,4 +353,4 @@ int main()
     StartGame();
 
     return 0;
-}   
+}
