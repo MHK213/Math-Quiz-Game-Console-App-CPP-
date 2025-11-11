@@ -1,14 +1,14 @@
-📌 Title
+## Title
 Math Quiz Game Console App (C++)
 
 ---------
 
-🧾 Description
+## Description
 A console-based arithmetic quiz game built with C++. It allows users to test their math skills by choosing a difficulty level and operation type (Add, Subtract, Multiply, Divide, or Mixed). The player receives feedback after each question (Answer is Wrong or Right, Time taken to answer and Score), and a final score summary at the end of the game (Number of Right Answers, Number of Wrong Answers, and Final Score).
 
 ---------
 
-🎯 Features
+## Features
 Adjustable number of questions
 
 Multiple difficulty levels: Easy, Medium, Hard, Mixed
@@ -25,7 +25,7 @@ Option to replay the game
 
 ---------
 
-🎮 How to Play
+## How to Play
 Choose how many questions to answer.
 
 Select difficulty and operation type.
@@ -38,7 +38,7 @@ Review the final score and choose to replay or quit.
 
 ---------
 
-🧪 Learning Objectives
+## Learning Objectives
 Apply structured programming using struct, enum, and functions.
 
 Practice loops, conditions, and random number generation.
